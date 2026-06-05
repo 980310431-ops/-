@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI学习搭子 · 产品文档</title>
+    <style>
+        :root {
+            --primary: #4f6ef7;
+            --primary-soft: #eef1ff;
+            --primary-dark: #3a56d4;
+            --accent: #ff8f5a;
+            --accent-soft: #fff4ee;
+            --bg: #f4f6fb;
+            --bg-pattern: radial-gradient(circle at 20% 10%, rgba(79, 110, 247, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 80% 80%, rgba(255, 143, 90, 0.05) 0%, transparent 40%);
+            --card: #ffffff;
+            --text: #1c2434;
+            --text-sub: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e8edf5;
+            --shadow-sm: 0 1px 2px rgba(28, 36, 52, 0.04);
+            --shadow: 0 8px 32px rgba(28, 36, 52, 0.07);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --sidebar-w: 268px;
+            --content-max: 1480px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+            background: var(--bg);
+            background-image: var(--bg-pattern);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* —— 侧栏 —— */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px 32px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px 20px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, #7b93ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(79, 110, 247, 0.35);
+        }
+
+        .sidebar-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .sidebar-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .nav-group {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin: 20px 0 6px 12px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            color: var(--text-sub);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            margin-bottom: 2px;
+            border-left: 3px solid transparent;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            font-weight: 600;
+            border-left-color: var(--primary);
+        }
+
+        /* —— 主内容 —— */
+        .main {
+            flex: 1;
+            margin-left: var(--sidebar-w);
+            padding: 32px 56px 80px;
+            width: calc(100% - var(--sidebar-w));
+            max-width: var(--content-max);
+        }
+
+        .doc-header {
+            position: relative;
+            margin-bottom: 40px;
+            padding: 40px 44px;
+            border-radius: 20px;
+            overflow: hidden;
+            color: #fff;
+            box-shadow: var(--shadow);
+        }
+
+        .doc-header::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(125deg, #3d5bdb 0%, #5b7cf8 40%, #7b9aff 100%);
+        }
+
+        .doc-header::after {
+            content: "";
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 280px;
+            height: 280px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+        }
+
+        .doc-header-inner { position: relative; z-index: 1; }
+
+        .doc-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+
+        .doc-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .doc-header p {
+            font-size: 15px;
+            opacity: 0.9;
+            max-width: 520px;
+        }
+
+        .doc-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .doc-meta span {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.16);
+            border-radius: 6px;
+        }
+
+        .rule-list {
+            list-style: none;
+            margin: 16px 0;
+            padding: 0;
+        }
+
+        .rule-list li {
+            display: flex;
+            gap: 10px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            background: var(--primary-soft);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        .rule-list strong {
+            flex-shrink: 0;
+            color: var(--primary-dark);
+            min-width: 72px;
+        }
+
+        section {
+            margin-bottom: 36px;
+            scroll-margin-top: 24px;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 32px 36px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--primary-soft);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 24px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+            color: var(--text);
+            padding-top: 8px;
+        }
+
+        h3:first-of-type { margin-top: 0; padding-top: 0; }
+
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 28px 0 12px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            scroll-margin-top: 80px;
+        }
+
+        h4::before {
+            content: "";
+            width: 4px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        p { margin-bottom: 14px; color: var(--text); }
+
+        ul, ol { margin: 12px 0 18px 20px; }
+        li { margin-bottom: 8px; color: var(--text); }
+        li::marker { color: var(--primary); }
+
+        /* 应用场景卡片 */
+        .scene-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .scene-card {
+            padding: 18px 20px;
+            background: linear-gradient(145deg, #fafbff 0%, #f5f7fc 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .scene-card:hover {
+            border-color: #c5d0f5;
+            box-shadow: 0 4px 16px rgba(79, 110, 247, 0.08);
+        }
+
+        .scene-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            background: var(--primary);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .scene-card p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.65;
+            color: var(--text);
+        }
+
+        .scene-tag {
+            display: block;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* 步骤块 */
+        .step {
+            margin: 24px 0;
+            padding: 20px 22px;
+            background: #fafbfd;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .step-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            background: var(--primary-soft);
+            border-radius: 8px;
+        }
+
+        .step-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.5;
+            padding-top: 4px;
+        }
+
+        .step p:last-child { margin-bottom: 0; }
+
+        /* 表格 */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 18px 0;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary-soft);
+            font-weight: 600;
+            color: var(--primary-dark);
+            white-space: nowrap;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: #fafbfd; }
+
+        /* 参数规格 */
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .spec-item {
+            padding: 14px 16px;
+            background: #fafbfd;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+
+        .spec-item dt {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .spec-item dd {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        /* 提示块 */
+        .note {
+            display: flex;
+            gap: 12px;
+            background: var(--accent-soft);
+            border: 1px solid #ffe0cc;
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            margin: 18px 0;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .note-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .note strong { color: #c2410c; }
+
+        .inline-hl {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* 指标标签 */
+        .metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 16px;
+        }
+
+        .metric-tag {
+            font-size: 12px;
+            padding: 6px 12px;
+            background: var(--primary-soft);
+            color: var(--primary-dark);
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* 图片 */
+        .img-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 16px 0;
+            align-items: flex-start;
+        }
+
+        figure { margin: 0; flex: 0 0 auto; }
+
+        .figure-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(160deg, #f8fafc 0%, #f1f4f9 100%);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .figure-img img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        figure.device .figure-img {
+            width: fit-content;
+            max-width: 100%;
+        }
+
+        figure.device .figure-img img {
+            max-width: 220px;
+            max-height: 320px;
+        }
+
+        figure.wide .figure-img {
+            width: 100%;
+            padding: 24px;
+        }
+
+        figure.wide .figure-img img {
+            max-width: 100%;
+            width: auto;
+        }
+
+        figure.medium .figure-img img {
+            max-width: 300px;
+            max-height: 400px;
+        }
+
+        figcaption {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .img-block { margin: 16px 0; }
+
+        /* 状态列表 */
+        .state-list {
+            list-style: none;
+            margin: 16px 0;
+            padding: 0;
+        }
+
+        .state-list li {
+            display: flex;
+            gap: 12px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            background: #fafbfd;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .state-list strong {
+            flex-shrink: 0;
+            min-width: 88px;
+            color: var(--primary-dark);
+        }
+
+        .doc-footer {
+            text-align: center;
+            padding: 32px 0 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .emoji-table .table-wrap {
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        .emoji-table table {
+            min-width: 1320px;
+            table-layout: fixed;
+        }
+
+        .emoji-table col.col-num { width: 52px; }
+        .emoji-table col.col-name { width: 96px; }
+        .emoji-table col.col-trigger { width: 180px; }
+        .emoji-table col.col-duration { width: 120px; }
+        .emoji-table col.col-input { width: 150px; }
+        .emoji-table col.col-output { width: 240px; }
+        .emoji-table col.col-local { width: 72px; }
+        .emoji-table col.col-desc { width: auto; }
+
+        .emoji-table th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            box-shadow: 0 1px 0 var(--border);
+            line-height: 1.5;
+            white-space: normal;
+        }
+
+        .emoji-table th, .emoji-table td {
+            padding: 12px 14px;
+            line-height: 1.65;
+            word-break: break-word;
+        }
+
+        .emoji-table td:nth-child(1),
+        .emoji-table td:nth-child(7) {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .emoji-table td:nth-child(6) {
+            white-space: normal;
+        }
+
+        .settings-list {
+            list-style: none;
+            margin: 12px 0;
+            padding: 0;
+        }
+
+        .settings-list li {
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            background: #fafbfd;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+        }
+
+        .settings-list strong {
+            display: block;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .sub-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 24px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .sub-nav a {
+            font-size: 12px;
+            padding: 5px 12px;
+            color: var(--text-sub);
+            background: #fafbfd;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .sub-nav a:hover {
+            color: var(--primary-dark);
+            border-color: #c5d0f5;
+            background: var(--primary-soft);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main {
+                margin-left: 0;
+                padding: 20px 20px 60px;
+                width: 100%;
+                max-width: 100%;
+            }
+            section { padding: 24px 20px; }
+            .doc-header { padding: 28px 24px; }
+            .scene-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (min-width: 1600px) {
+            :root { --content-max: 1560px; }
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+    <nav class="sidebar" aria-label="文档目录">
+        <div class="sidebar-brand">
+            <div class="sidebar-logo" aria-hidden="true">🦁</div>
+            <div>
+                <div class="sidebar-title">AI学习搭子</div>
+                <div class="sidebar-sub">产品文档</div>
+            </div>
+        </div>
+        <div class="nav-group">概览</div>
+        <a class="nav-link" href="#scene">应用场景</a>
+        <div class="nav-group">软件功能</div>
+        <a class="nav-link" href="#software">功能清单</a>
+        <a class="nav-link" href="#keys">按键定义</a>
+        <a class="nav-link" href="#first-start">首次启动</a>
+        <a class="nav-link" href="#lockscreen">锁屏页</a>
+        <a class="nav-link" href="#apps">应用功能</a>
+        <a class="nav-link" href="#other-state">其他状态</a>
+        <div class="nav-group">硬件</div>
+        <a class="nav-link" href="#hardware">外观硬件</a>
+        <a class="nav-link" href="#base">底座</a>
+        <a class="nav-link" href="#params">产品参数</a>
+        <a class="nav-link" href="#system">系统功能</a>
+        <div class="nav-group">表情</div>
+        <a class="nav-link" href="#emoji">表情功能表</a>
+    </nav>
+
+    <main class="main">
+        <header class="doc-header">
+            <div class="doc-header-inner">
+                <span class="doc-badge">智能硬件 · 产品说明</span>
+                <h1>AI学习搭子</h1>
+                <p>面向药考学员的学习陪伴硬件，涵盖软件交互、硬件规格与表情体系完整说明。</p>
+                <div class="doc-meta">
+                    <span>文档版本 · 最新</span>
+                    <span>屏幕 · 1.85 寸圆形 LCD</span>
+                    <span>表情 · 39 种</span>
+                </div>
+            </div>
+        </header>
+
+        <section id="scene">
+            <span class="section-label">OVERVIEW</span>
+            <h2>应用场景</h2>
+            <p class="section-desc">围绕药考学员日常学习与生活，设备与润德教育生态协同完成以下核心能力。</p>
+            <ol class="scene-grid">
+                <li class="scene-card">
+                    <span class="scene-num">1</span>
+                    <p>药考知识点答疑，支持专业问答及与大咖智能体通话</p>
+                    <span class="scene-tag">润德 API</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">2</span>
+                    <p>语音音频库播放：音频课、专注/阅读模式背景音乐</p>
+                    <span class="scene-tag">硬件 + 润德后端 + 云端</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">3</span>
+                    <p>直播开播提醒、学习任务提醒及发货/节点/生日/面授预约等智能播报</p>
+                    <span class="scene-tag">硬件 + 润德</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">4</span>
+                    <p>番茄时钟</p>
+                    <span class="scene-tag">硬件</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">5</span>
+                    <p>本地备忘录提醒</p>
+                    <span class="scene-tag">大模型 + 硬件</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">6</span>
+                    <p>拨打微信电话</p>
+                    <span class="scene-tag">大模型 + 菊风 SDK + 硬件 + 润德小程序（定位 / VOIP / 地图）</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">7</span>
+                    <p>绑定润德教育 APP 账号（扫码）</p>
+                    <span class="scene-tag">硬件 + 润德</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">8</span>
+                    <p>APP 与学习搭子 MQTT 联动，HTTP 拉取表情与音频</p>
+                    <span class="scene-tag">硬件 + 润德</span>
+                </li>
+                <li class="scene-card">
+                    <span class="scene-num">9</span>
+                    <p>GPS 定位</p>
+                </li>
+            </ol>
+        </section>
+
+        <section id="software">
+            <span class="section-label">SOFTWARE</span>
+            <h2>软件功能介绍</h2>
+            <p class="section-desc">系统级能力与各应用模块总览。</p>
+            <h3>功能清单</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>功能名称</th><th>功能说明</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>账号登录</td><td>使用「润德教育」APP 扫码登录</td></tr>
+                        <tr><td>开机引导</td><td>首次激活后展示的开机引导流程</td></tr>
+                        <tr><td>控制栏</td><td>系统功能控制：4G、音量大小、电量、亮度、静音模式<br>播放状态：存在播放中显示<br>消息：存在消息时显示</td></tr>
+                        <tr><td>应用功能</td><td>AI 问答、消息、课程、智能体、提醒事项、微信、番茄时钟、设置</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="keys">
+            <h3>1. 按键定义</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>按键名称</th><th>页面 / 场景</th><th>操作方式</th><th>功能定义</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td rowspan="6">AI 按键</td><td>锁屏页</td><td>短按</td><td>进入功能菜单页</td></tr>
+                        <tr><td>锁屏页</td><td>长按</td><td>唤醒 AI 问答</td></tr>
+                        <tr><td>功能菜单页</td><td>短按</td><td>确认选择 / 进入下级</td></tr>
+                        <tr><td>功能菜单页</td><td>长按</td><td>唤醒 AI 问答</td></tr>
+                        <tr><td>播放页</td><td>短按</td><td>暂停 / 继续播放</td></tr>
+                        <tr><td>播放页</td><td>长按</td><td>唤醒 AI 问答，并暂停当前播放</td></tr>
+                        <tr><td rowspan="4">电源键</td><td>首页</td><td>短按</td><td>锁屏 / 亮屏</td></tr>
+                        <tr><td>首页</td><td>长按</td><td>开关机</td></tr>
+                        <tr><td>二级页面</td><td>短按</td><td>返回上一级</td></tr>
+                        <tr><td>二级页面</td><td>长按</td><td>开关机</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="first-start">
+            <h3>2. 首次启动</h3>
+
+            <div class="step">
+                <div class="step-head">
+                    <span class="step-num">2.1</span>
+                    <span class="step-title">设备激活</span>
+                </div>
+                <p>首次点击设备开机启动后，进入设备激活页面。</p>
+                <figure class="img-block device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/a3cf9e5d-0278-4084-b20b-3e5c8ba2ff17.png" alt="设备激活页面">
+                    </div>
+                    <figcaption>设备激活页</figcaption>
+                </figure>
+            </div>
+
+            <div class="step">
+                <div class="step-head">
+                    <span class="step-num">2.2</span>
+                    <span class="step-title">账号登录</span>
+                </div>
+                <p>点击<span class="inline-hl">激活</span>并连接网络，<span class="inline-hl">待开机动画结束后</span>即进入登录页。请使用<span class="inline-hl">润德教育 APP</span>扫码绑定账号；二维码有效期为 1 分钟，超时需刷新。</p>
+                <div class="img-gallery">
+                    <figure class="device">
+                        <div class="figure-img">
+                            <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/2c44fde1-2812-475b-b689-9a2c7145a4c0.png" alt="账号登录">
+                        </div>
+                        <figcaption>账号登录</figcaption>
+                    </figure>
+                    <figure class="device">
+                        <div class="figure-img">
+                            <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/a20cfda4-4295-483f-8811-e9a8d2d281da.png" alt="刷新二维码">
+                        </div>
+                        <figcaption>刷新二维码</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-head">
+                    <span class="step-num">2.3</span>
+                    <span class="step-title">开机向导</span>
+                </div>
+                <p>扫码登录成功后进入开机向导（仅首次开机展示）。</p>
+                <figure class="img-block wide">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/dYY8xDbwvsmY9Ze2/1239b33e4b204cac8539e9af4e19eb922636.png" alt="开机向导流程">
+                    </div>
+                    <figcaption>开机向导 · 语音交互流程</figcaption>
+                </figure>
+                <div class="note">
+                    <span class="note-icon">💡</span>
+                    <div>
+                        <strong>指令接收超时：</strong>若用户持续 <strong>10 秒</strong>无语音输入，系统自动结束录音，进入请求处理并返回「无内容」类回应。
+                    </div>
+                </div>
+                <ul>
+                    <li>扫码登录后进入引导页；可短按 AI 键或呼叫「小狮」唤醒问答，也可选择跳过向导进入首页</li>
+                    <li>唤醒后展示对应表情，并播报「小狮在呢，你请说」</li>
+                    <li>检测到用户说话，停止说话 <strong>2 秒</strong>后退出麦克风监听，进入「思考中」表情</li>
+                    <li>思考完成后按问题作答，回答结束等待 <strong>1 秒</strong>后进入开机引导第二步</li>
+                </ul>
+                <div class="img-gallery">
+                    <figure class="device">
+                        <div class="figure-img">
+                            <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/569b241b-a09c-4ebf-8368-81a078bf120a.png" alt="引导页1">
+                        </div>
+                        <figcaption>引导步骤一</figcaption>
+                    </figure>
+                    <figure class="device">
+                        <div class="figure-img">
+                            <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/d8aefdfb-5676-47d9-819a-fd5f5388643b.png" alt="引导页2">
+                        </div>
+                        <figcaption>引导步骤二</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-head">
+                    <span class="step-num">2.4</span>
+                    <span class="step-title">进入功能菜单</span>
+                </div>
+                <p>开机引导第二步：用户短按 AI 按键，进入功能菜单页。</p>
+                <figure class="img-block device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/669c4ea9-2cc6-40bc-9785-d87ca53d5820.png" alt="菜单页">
+                    </div>
+                    <figcaption>功能菜单页</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="lockscreen">
+            <h3>3. 锁屏页</h3>
+
+            <div class="step">
+                <div class="step-head">
+                    <span class="step-num">3.1</span>
+                    <span class="step-title">锁屏与熄屏</span>
+                </div>
+                <p>锁屏页显示「<span class="inline-hl">静静等待着</span>」表情；若 <strong>30 秒</strong>内无任何操作，自动熄屏。点击设置进入控制中心页面。</p>
+                <p>锁屏页默认展示表情；若没有任何触发操作，30 秒后自动熄屏。</p>
+                <figure class="img-block device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/5375faa4-3485-44d7-9864-2298607e6afd.png" alt="锁屏页">
+                    </div>
+                    <figcaption>锁屏页</figcaption>
+                </figure>
+            </div>
+
+            <h4>3.2 控制栏</h4>
+            <p>控制栏显示功能：控制中心、播放中、消息。</p>
+
+            <h4>3.2.1 控制中心</h4>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/f9c71231-54d6-4382-9e84-fd99c4ff86da.png" alt="控制中心">
+                </div>
+                <figcaption>控制中心</figcaption>
+            </figure>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>模块名称</th><th>默认显示 / 状态</th><th>点击交互</th></tr></thead>
+                    <tbody>
+                        <tr><td>4G 网络状态</td><td>显示 4G 信号格；无网时显示断网图标</td><td>纯展示</td></tr>
+                        <tr><td>音量</td><td>显示当前音量等级图标</td><td>唤起音量调节界面</td></tr>
+                        <tr><td>电量</td><td>显示实时电量百分比 / 图标</td><td>进入设置并开启「低电量模式」<br>低电量模式开启后：不请求线上表情</td></tr>
+                        <tr><td>亮度</td><td>显示当前亮度等级图标</td><td>唤起亮度调节滑块</td></tr>
+                        <tr><td>静音模式</td><td>显示当前开关状态（开 / 关）</td><td>切换静音模式的开启与关闭</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>3.2.2 播放中</h4>
+            <p>如果存在播放中内容才显示；播放图标需做动态效果，左滑可删除播放内容。</p>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/4cd93cd8-0330-4ee5-a6ea-bf3e5174a081.png" alt="播放中">
+                </div>
+                <figcaption>播放中</figcaption>
+            </figure>
+
+            <h4>3.2.3 消息通知</h4>
+            <p>灵动岛中仅显示当天的通知内容；点击可进入查看消息详情，左滑删除消息，删除后在消息页面同步删除。</p>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/ea7d8c8c-55b1-42e2-a77f-856139ee3a54.png" alt="消息通知">
+                </div>
+                <figcaption>消息通知</figcaption>
+            </figure>
+        </section>
+
+        <section id="apps">
+            <span class="section-label">APPS</span>
+            <h2>4. 应用功能</h2>
+            <ul class="sub-nav">
+                <li><a href="#app-ai">4.1 AI 问答</a></li>
+                <li><a href="#app-msg">4.2 消息</a></li>
+                <li><a href="#app-course">4.3 课程</a></li>
+                <li><a href="#app-agent">4.4 智能体</a></li>
+                <li><a href="#app-reminder">4.5 提醒</a></li>
+                <li><a href="#app-wechat">4.6 微信/番茄钟</a></li>
+                <li><a href="#app-settings">4.7 设置</a></li>
+            </ul>
+
+            <h4 id="app-ai">4.1 AI 问答</h4>
+            <p>点击 AI 问答按钮进入 / 使用唤醒词「小狮」/ 长按 AI 按键，均可进入 AI 问答页。进入后 AI 回应：「在呢，你请说」。</p>
+            <div class="metrics">
+                <span class="metric-tag">唤醒 &lt; 500ms</span>
+                <span class="metric-tag">识别准确率 &gt; 95%</span>
+                <span class="metric-tag">误唤醒 &lt; 1 次 / 24h</span>
+                <span class="metric-tag">多场景降噪</span>
+            </div>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/0794f43e-29b4-4642-9e53-63d58bffb975.png" alt="AI问答">
+                </div>
+                <figcaption>AI 问答</figcaption>
+            </figure>
+
+            <h4 id="app-msg">4.2 消息</h4>
+            <p>由甲方返回后台数据对接。点击消息进入查看收到的消息内容，仅保存 <strong>30 天</strong>内的消息，超过 30 天不显示。左滑可删除消息，点击消息进入查看详情。</p>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/19519492-258e-4db8-a50b-88816c86a435.png" alt="消息">
+                </div>
+                <figcaption>消息列表</figcaption>
+            </figure>
+
+            <h4 id="app-course">4.3 课程</h4>
+            <p>由甲方返回后台数据对接。点击进入课程列表，再进入小节内容；在小节点击进行音频播放。课程名称、小节名称、时长及播放头像均由甲方提供。</p>
+            <ul>
+                <li><strong>返回：</strong>继续播放音频，屏幕熄灭后也继续播放</li>
+                <li><strong>上一个：</strong>切换上一个音频，不存在上一个则自动跳转最后一个</li>
+                <li><strong>下一个：</strong>切换下一个音频，不存在下一个则自动跳转第一个</li>
+            </ul>
+            <div class="img-gallery">
+                <figure class="device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/ac5e3116-295b-43c2-9193-63e5eb452f19.png" alt="课程列表">
+                    </div>
+                    <figcaption>课程列表</figcaption>
+                </figure>
+                <figure class="device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/91fd34c8-0428-4f75-a9ef-ba1ff855f489.png" alt="课程播放">
+                    </div>
+                    <figcaption>课程播放</figcaption>
+                </figure>
+            </div>
+
+            <h4 id="app-agent">4.4 智能体切换</h4>
+            <p>左右切换选择智能体，切换后点击返回，使用对应选中智能体的音色。共 <strong>8 个</strong>（润德提供 API，Token 消耗润德的）：</p>
+            <ul>
+                <li><strong>默认：</strong>陪伴闲聊智能体（1 个）</li>
+                <li><strong>药师考试智能体：</strong>3 个（中药 1 个、西药 1 个、法规 1 个）</li>
+                <li><strong>孩子使用智能体：</strong>4 个</li>
+            </ul>
+            <div class="img-gallery">
+                <figure class="device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/dYY8xDbwvsmY9Ze2/3bd38728e88442a398a3dfa1ca8973242636.png" alt="智能体">
+                    </div>
+                </figure>
+                <figure class="device">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/32a154c4-952c-4bc4-bb69-8d92b053f230.png" alt="智能体切换">
+                    </div>
+                    <figcaption>智能体切换</figcaption>
+                </figure>
+            </div>
+
+            <h4 id="app-reminder">4.5 提醒事项</h4>
+            <p>由 AI 创建的提醒事项，支持日常通过 AI 添加提醒内容。点击加号唤醒 AI，AI 主动询问：「你好！你希望小狮帮你提醒什么呢？」。暂无提醒时显示对应占位图。</p>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/2755af79-c56e-458c-827d-a89e6e0740d8.png" alt="提醒事项">
+                </div>
+                <figcaption>提醒事项</figcaption>
+            </figure>
+
+            <h4 id="app-wechat">4.6 微信、番茄时钟</h4>
+            <p>使用乙方原本自带的微信内容，本文件不额外补充。</p>
+
+            <h4 id="app-settings">4.7 设置</h4>
+            <ul class="settings-list">
+                <li><strong>4.7.1 账号绑定</strong>显示扫码绑定的润德教育 APP 账号，可点击退出账号，退出后回到扫码登录页。</li>
+                <li><strong>4.7.2 通知提醒</strong>控制语音播放和宠物动画的开关。若都关闭，不显示宠物动画和自动语音播报（首页的宠物动画不受此控制）。</li>
+                <li><strong>4.7.3 关于本机</strong>显示产品信息。</li>
+                <li><strong>4.7.4 恢复出厂</strong>点击恢复出厂设置。</li>
+            </ul>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/188b6193-fbec-451a-8155-dcb0c0fc63a4.png" alt="设置">
+                </div>
+                <figcaption>设置</figcaption>
+            </figure>
+        </section>
+
+        <section id="other-state">
+            <h3>5. 其他状态</h3>
+            <ul class="state-list">
+                <li><strong>5.1 充电中</strong><span>显示充电中状态，点击屏幕进入首页</span></li>
+                <li><strong>5.2 无网络</strong><span>流量到期时，点击任何功能均无网络链接，需到运营商充值后才可以继续使用</span></li>
+                <li><strong>5.3 储存空间不足</strong><span>内存不足时提示</span></li>
+            </ul>
+            <figure class="img-block device">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/ad9efc9a-9219-46f0-9922-8717d5007f7b.png" alt="其他状态">
+                </div>
+                <figcaption>异常 / 状态页示意</figcaption>
+            </figure>
+        </section>
+
+        <section id="hardware">
+            <span class="section-label">HARDWARE</span>
+            <h2>硬件功能介绍</h2>
+            <h3>1. 外观硬件</h3>
+            <div class="img-gallery">
+                <figure class="medium">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/MAeqxebNw2jdxO8j/img/71237c0c-808a-4e40-b72f-926936dc19b7.png" alt="外观1">
+                    </div>
+                </figure>
+                <figure class="medium">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/MAeqxebNw2jdxO8j/img/bfa4d289-0d86-4745-849c-2fc7e451ce25.png" alt="外观2">
+                    </div>
+                </figure>
+                <figure class="medium">
+                    <div class="figure-img">
+                        <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/MAeqxebNw2jdxO8j/img/da130f93-a7c8-4164-9187-71f42d9017a2.png" alt="外观3">
+                    </div>
+                </figure>
+            </div>
+            <figure class="img-block wide">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/a/dYY8xDbwvsmY9Ze2/74eb93b1ff1046559156756b9c55fc5b2636.png" alt="按键说明">
+                </div>
+                <figcaption>机身按键说明</figcaption>
+            </figure>
+            <p>支持定制自定义 IP 皮套。</p>
+            <figure class="img-block medium">
+                <div class="figure-img">
+                    <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebN9vw5onak/img/e9815409-d4c0-46a6-a368-ce2d8f76e3f0.png" alt="皮套">
+                </div>
+                <figcaption>定制 IP 皮套</figcaption>
+            </figure>
+        </section>
+
+        <section id="base">
+            <h3>2. 底座</h3>
+            <ol>
+                <li><strong>Pogo pin：</strong>磁吸充电，并传输触摸键值</li>
+                <li><strong>触摸点（4 个）：</strong>双脚各 1、手部 1、背部 1</li>
+                <li><strong>Type-C：</strong>底座供电接口</li>
+                <li><strong>配重铅块：</strong>看是否必要</li>
+            </ol>
+        </section>
+
+        <section id="params">
+            <h3>3. 产品参数</h3>
+            <dl class="spec-grid">
+                <div class="spec-item"><dt>芯片</dt><dd>展锐 W217</dd></div>
+                <div class="spec-item"><dt>系统</dt><dd>RTOS</dd></div>
+                <div class="spec-item"><dt>通信</dt><dd>4G 模组</dd></div>
+                <div class="spec-item"><dt>喇叭</dt><dd>2W</dd></div>
+                <div class="spec-item"><dt>屏幕</dt><dd>LCD 圆形 1.85 寸，全彩 360P RGB</dd></div>
+                <div class="spec-item"><dt>存储</dt><dd>16+16M（表情、UI、约 60 段音频及 OTA）</dd></div>
+                <div class="spec-item"><dt>麦克风</dt><dd>1 个，DSP 降噪</dd></div>
+                <div class="spec-item"><dt>按键</dt><dd>AI 键 ×1，电源键 ×1</dd></div>
+                <div class="spec-item"><dt>电池</dt><dd>750mA，待机 3–7 天</dd></div>
+                <div class="spec-item"><dt>定位</dt><dd>GPS + WiFi Scan（WiFi 不传数据）</dd></div>
+                <div class="spec-item"><dt>SIM</dt><dd>物联网卡</dd></div>
+            </dl>
+        </section>
+
+        <section id="system">
+            <h3>4. 系统功能说明</h3>
+            <ol>
+                <li><strong>不充电：</strong>深度休眠，断掉 mic；充电时 mic 持续开启</li>
+                <li><strong>联网正常状态：</strong>触摸、表情清醒状态 + 语音交互、正常交互</li>
+                <li><strong>休眠状态：</strong>断开表情睡眠状态，连接网络和板子，支持语音 / 触摸 / 按键唤醒，恢复至联网正常状态</li>
+                <li><strong>深度休眠状态：</strong>屏幕熄灭，断开板子，仅支持按键或时钟闹铃唤醒，唤醒至正常状态</li>
+                <li><strong>关机状态：</strong>断电，仅支持长按开关机键开机唤醒</li>
+                <li><strong>充电休眠状态：</strong>屏幕熄灭，不断开网络、板子，支持语音唤醒、按键唤醒、闹铃 / 计时器 / 播报时刻唤醒</li>
+            </ol>
+            <h4>休眠计时（第 7 条）</h4>
+            <ul>
+                <li>未充电：1 分钟无交互 → 进入休眠状态</li>
+                <li>未充电：3 分钟无交互 → 进入深度休眠状态</li>
+                <li>充电中：5 分钟无交互 → 进入充电休眠状态，持续状态，不关机</li>
+            </ul>
+            <h4>电池策略（第 8 条）</h4>
+            <ul>
+                <li><strong>8.1</strong> 电量剩余 2% 自动关机，支持开机后提示电量低后自动关机（支持数百次）</li>
+                <li><strong>8.2</strong> 电量剩余 5%，每次启动播放一次需要充电动画</li>
+                <li><strong>8.3</strong> 充电磁吸时，播放显示一次正在充电动画，显示电量后进入正常状态</li>
+                <li><strong>8.4</strong> 充满电，不显示充满电动画</li>
+            </ul>
+        </section>
+
+        <section id="emoji" class="emoji-table">
+            <span class="section-label">EXPRESSION</span>
+            <h2>表情功能介绍</h2>
+            <p class="section-desc">共 39 种表情及触发规则，下表为完整对照（语音/音效已优化）。</p>
+
+            <ul class="rule-list">
+                <li><strong>状态优先级</strong><span>系统警告 &gt; 主动交互 &gt; 被动状态。高优状态触发时，强制打断并清除低优状态。</span></li>
+                <li><strong>语音保护</strong><span>在「在听」与「说话」状态下，屏蔽所有非紧急触摸互动，防止打断语音。</span></li>
+                <li><strong>超时兜底</strong><span>「在听」超时 10s 自动退出并提示；「在思考」超时 15s 自动退出并提示。</span></li>
+                <li><strong>触控冷却</strong><span>所有触摸互动（摸头/挠痒等）需设置 3s 冷却时间，防止连续触发导致音效吵闹。</span></li>
+                <li><strong>断网降级</strong><span>所有联网大模型语音输出，必须配置本地兜底音效，断网时自动降级播放本地音效。</span></li>
+            </ul>
+
+            <div class="table-wrap">
+                <table>
+                    <colgroup>
+                        <col class="col-num">
+                        <col class="col-name">
+                        <col class="col-trigger">
+                        <col class="col-duration">
+                        <col class="col-input">
+                        <col class="col-output">
+                        <col class="col-local">
+                        <col class="col-desc">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>编号</th><th>表情名称</th><th>触发逻辑</th><th>显示时长</th>
+                            <th>语音指令（输入）</th><th>语音/音效播放（输出）【已优化】</th><th>是否本地</th><th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>开机动画</td><td>每次开机启动触发</td><td>3s</td><td>无</td><td>嗷呜～（伸懒腰声）+ 清脆的「叮铃」声</td><td>是</td><td>唤醒感，像小动物刚睡醒伸懒腰，清脆提示音代表系统就绪</td></tr>
+                        <tr><td>2</td><td>联网失败</td><td>未连接网络的情况</td><td>3s</td><td>无</td><td>委屈的「呜…」，伴随轻微的「滴滴」断网提示音</td><td>是</td><td>表达「我掉线了」的委屈感，断网音增加系统提示感</td></tr>
+                        <tr><td>3</td><td>打瞌睡</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>渐弱的「呼…呼…」，伴随轻微的卡通打呼噜声</td><td>是</td><td>声音逐渐变小，营造真的睡着了的沉浸感。与 4,5,6,7 随机触发其一，仅播放一次不循环</td></tr>
+                        <tr><td>4</td><td>静静地待着</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>轻微的「嗯…嗯…」，伴随微弱的呼吸声</td><td>是</td><td>表达安静陪伴，呼吸声让设备有「生命感」。与 3,5,6,7 随机触发其一，仅播放一次不循环</td></tr>
+                        <tr><td>5</td><td>无聊</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>叹气声「唉…」，伴随手指敲击桌面的「哒哒」声</td><td>是</td><td>拟人化表达无聊，敲击声增加趣味性。与 3,4,6,7 随机触发其一，仅播放一次不循环</td></tr>
+                        <tr><td>6</td><td>彩虹</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>惊喜的「哇哦～」，伴随「Bling Bling」的魔法闪烁音</td><td>是</td><td>强化惊喜感，魔法音配合彩虹视觉。与 3,4,5,7 随机触发其一，仅播放一次不循环</td></tr>
+                        <tr><td>7</td><td>呼噜（酣睡）</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>节奏感强的「呼噜…呼噜…」，伴随轻微的震动反馈</td><td>是</td><td>节奏比「打瞌睡」更平稳，配合马达震动体验更佳。与 3,4,5,6 随机触发其一，仅播放一次不循环</td></tr>
+                        <tr><td>8</td><td>睡觉（指令）</td><td>指令要求 2 次后触发，第一次不愿意，第二次进入睡眠状态</td><td>1 分钟</td><td>睡觉、去睡觉、晚安、我要睡觉了、休息一下</td><td>第一次：撒娇的「哎呀，人家还不想睡嘛…」<br>第二次：满足的「好哒，那我睡觉去啦，晚安～」</td><td>是</td><td>第一次带点拖音的撒娇，第二次语气要轻柔、催眠。需记录触发次数状态，30s 内未再次触发则重置</td></tr>
+                        <tr><td>9</td><td>需要充电</td><td>电量 ≤20%</td><td>3s</td><td>无</td><td>虚弱的「呜…电量快没啦，要充电…」+ 低电量警报音</td><td>是</td><td>低电量提示要柔和不刺耳。结束后显示低电量模式页面</td></tr>
+                        <tr><td>10</td><td>充电时刻</td><td>充电连接后显示充电动画</td><td>3s</td><td>无</td><td>轻快的「叮～」+ 充电动效音</td><td>是</td><td>充电连接时的正向反馈。结束后显示充电中的图</td></tr>
+                        <tr><td>11</td><td>在听</td><td>唤醒小狮 / 长按 AI 按键 / 点击 AI 问答</td><td>持续至说话结束</td><td>小狮、呼叫小狮</td><td>清脆的「小狮在呢，你请说～」+ 轻微的「滴」提示音</td><td>是</td><td>提示音要短促清脆，代表麦克风已开启。未输入 10s 断开；输入后 3s 未说话断开</td></tr>
+                        <tr><td>12</td><td>在思考</td><td>识别完在听指令后，大模型思考内容时</td><td>持续至指令识别完毕</td><td>无</td><td>无语音，播放「咕噜咕噜」的脑内运转音或轻柔的「滴答」声</td><td>是</td><td>避免死寂，用轻微的机械音或思考音填补大模型处理时的空白</td></tr>
+                        <tr><td>13</td><td>疑问茫然</td><td>语音指令：识别未知问题 / 超出知识库</td><td>持续至说完内容</td><td>无</td><td>疑惑的「咦？」，伴随卡通的「问号弹出」音效</td><td>是</td><td>表达「我没听懂」，音效要带有疑问的上扬语调。联网状态下由大模型输出</td></tr>
+                        <tr><td>14</td><td>说话</td><td>根据用户输入的指令，思考后已知问题显示</td><td>持续至说完内容</td><td>无</td><td>由大模型 TTS 输出（建议配置活泼、有亲和力的童声 / 青年音色）</td><td>是</td><td>语音合成需带有情绪起伏，避免机械播报</td></tr>
+                        <tr><td>15</td><td>开心</td><td>屏幕脸蛋上下滑动 2 次、额头左右滑动 2 次 / 语音指令</td><td>3s</td><td>你真棒、我好开心、太开心了、真厉害等</td><td>欢快的「哈哈！」，伴随撒花 / 星星的「Bling」声</td><td>是</td><td>情绪饱满，笑声要自然不突兀。屏幕滑动操作和鬼脸随机出现。联网由大模型输出</td></tr>
+                        <tr><td>16</td><td>鬼脸</td><td>屏幕滑动 / 语音指令</td><td>3s</td><td>做个鬼脸、搞笑一点、来个鬼脸</td><td>调皮的「略略略～」或「嘻嘻」，伴随滑稽的「Boing」弹簧音</td><td>是</td><td>弹簧音配合鬼脸视觉，喜剧效果拉满。联网状态下相同</td></tr>
+                        <tr><td>17</td><td>生气</td><td>屏幕触摸眼睛</td><td>3s</td><td>无</td><td>傲娇的「哼！」，伴随轻微的「跺脚」声</td><td>是</td><td>表达小脾气，跺脚声增加拟人感</td></tr>
+                        <tr><td>18</td><td>长大嘴巴咬</td><td>点击嘴巴 / 语音指令</td><td>3s</td><td>你咬我呀</td><td>夸张的「啊呜！」，伴随卡通的「吧唧」咀嚼音</td><td>是</td><td>互动感强，声音要夸张可爱。断网状态下使用，联网由大模型输出</td></tr>
+                        <tr><td>19</td><td>难过</td><td>左右滑动下巴 2 次 / 语音指令</td><td>3s</td><td>我好难过、工作好难、太难了</td><td>委屈的「呜呜…」，伴随下雨的白噪音</td><td>是</td><td>情绪共情，下雨声烘托难过氛围。断网状态下使用，联网由大模型输出</td></tr>
+                        <tr><td>20</td><td>骄傲</td><td>完成学习计划，鼓励性 / 语音指令</td><td>3s</td><td>小狮，你表扬一下我、小狮，你夸夸我</td><td>得意的「哼哼！」，伴随「闪亮登场」的音效</td><td>是</td><td>表达求表扬的傲娇感</td></tr>
+                        <tr><td>21</td><td>鼓励</td><td>背部传感器长按 3s / 语音指令</td><td>3s</td><td>工作好难、学习好累、加油、坚持不住了</td><td>温柔的「加油哦～」，伴随轻柔的「拍拍」声</td><td>是</td><td>声音要温暖治愈，拍拍声配合背部传感器。联网状态下由大模型输出</td></tr>
+                        <tr><td>22</td><td>星星（惊喜）</td><td>APP 积分到账 / 用户分享惊喜 / 连续点击 4 次</td><td>3s</td><td>分享惊喜内容</td><td>惊喜的「哇！」，伴随金币掉落 / 升级的「叮当」声</td><td>是</td><td>强化「获得奖励」的正向反馈</td></tr>
+                        <tr><td>23</td><td>兴奋</td><td>语音指令：表示开心兴奋 / 联网后首次唤醒</td><td>3s</td><td>要旅行了、周末快乐、好兴奋、要出去玩啦</td><td>激动的「太棒啦！」，伴随欢快的「嘟嘟」喇叭声</td><td>是</td><td>情绪高昂，喇叭声增加庆祝感。断网状态下使用，联网由大模型输出</td></tr>
+                        <tr><td>24</td><td>闹钟</td><td>备忘录提醒内容时间到了后显示播报</td><td>内容播放完毕结束</td><td>无</td><td>清脆的「叮铃铃～」+ 语音：「小主人，你设置的提醒时间已经到了哦！」</td><td>是</td><td>闹钟音要清晰但不刺耳，避免吓到用户</td></tr>
+                        <tr><td>25</td><td>眨眼（调皮）</td><td>脸部传感器（轻触 1 次 + 在线待机）</td><td>3s</td><td>无</td><td>俏皮的「Wink～」音效或轻微的「啾」声</td><td>是</td><td>配合眨眼动作，增加灵动感</td></tr>
+                        <tr><td>26</td><td>错误</td><td>指令识别失败 / 功能执行出错</td><td>3s</td><td>无</td><td>滑稽的「哎呀…」，伴随卡通的「滑倒」或「乌鸦飞过」音效</td><td>是</td><td>用幽默化解识别失败的尴尬，避免挫败感</td></tr>
+                        <tr><td>27</td><td>计时器</td><td>语音指令</td><td>倒计时截止后停止</td><td>开启计时器、<br>计时 25 分钟等</td><td>开始：「滴答滴答」白噪音<br>结束：清脆的「叮～」或「布谷鸟」叫声</td><td>是</td><td>计时过程用白噪音不干扰，结束时用清脆提示音。最大 30 分钟，超限引导创建提醒</td></tr>
+                        <tr><td>28</td><td>天气播报</td><td>语音指令 + 播报结束停止</td><td>播报结束停止</td><td>今天天气怎么样、播报天气</td><td>根据天气动态变化：晴天配鸟鸣，雨天配雨声，雪天配风声</td><td>是</td><td>沉浸式播报，让天气更有画面感</td></tr>
+                        <tr><td>29</td><td>爱心</td><td>语音指令 / 下巴热区滑动 3 次 / 轻摸头部</td><td>3s</td><td>你陪伴真好、喜欢你、爱你</td><td>甜蜜的「嘿嘿～」，伴随「心跳」或「爱心发射」音效</td><td>是</td><td>表达被爱的喜悦，心跳声增强陪伴感。联网状态下由大模型输出</td></tr>
+                        <tr><td>30</td><td>提醒看直播</td><td>对应账号有权限的直播开始前 15 分钟</td><td>语音播报结束</td><td>无</td><td>欢快的「叮咚！」+ 语音：「同学你好～你的直播课还有 15 分钟就要开始了，请打开 APP 观看吧～」</td><td>是</td><td>提醒音要轻快，避免像警告</td></tr>
+                        <tr><td>31</td><td>唱歌</td><td>语音指令，持续至音乐结束或切歌</td><td>持续至结束</td><td>放首歌、听音乐、来点音乐</td><td>欢快的「好呀，听我的～」，伴随音乐播放的「打碟」或「前奏」音效</td><td>是</td><td>增加点歌的仪式感</td></tr>
+                        <tr><td>32</td><td>痒痒笑</td><td>摸脚丫子</td><td>3s</td><td>无</td><td>咯咯咯的笑声，伴随弹簧「Boing」声</td><td>是</td><td>笑声要真实自然，配合触摸反馈</td></tr>
+                        <tr><td>33</td><td>消息提醒</td><td>新消息通知（除直播外）</td><td>播报结束停止</td><td>无</td><td>柔和的「叮咚～」+ 播报消息内容</td><td>是</td><td>提示音要区别于闹钟，避免引起紧张</td></tr>
+                        <tr><td>34</td><td>饿了</td><td>超过 * 小时没有喂食</td><td>30s</td><td>无</td><td>肚子「咕噜噜」叫声 + 委屈的「呜…」</td><td>是</td><td>拟人化表达饥饿，声音要明显。喂食后恢复或 30s 后回到待机</td></tr>
+                        <tr><td>35</td><td>吃饱了开心</td><td>识别到有进行喂食操作</td><td>3s</td><td>无</td><td>满足的「嗝～」，伴随开心的「嘻嘻」声</td><td>是</td><td>拟人化表达吃饱，打嗝声增加趣味</td></tr>
+                        <tr><td>36</td><td>吃东西</td><td>喂食时</td><td>持续至喂食结束</td><td>无</td><td>夸张的「吧唧吧唧」咀嚼音</td><td>否</td><td>配合喂食动作，声音要清脆。需确认是否改为本地缓存</td></tr>
+                        <tr><td>37</td><td>舒服</td><td>抚摸后背</td><td>3s</td><td>无</td><td>满足的「嗯～」，伴随猫咪般的「呼噜」声</td><td>是</td><td>表达被抚摸的惬意</td></tr>
+                        <tr><td>38</td><td>休眠</td><td>短按开关键</td><td>持续至按键唤醒</td><td>无</td><td>渐弱的「晚安～」，伴随轻柔的「呼噜」声</td><td>是</td><td>声音逐渐变小，引导用户进入休息状态</td></tr>
+                        <tr><td>39</td><td>手机联动喂食</td><td>手机触发，通过 MQTT 协议传输联动</td><td>3s</td><td>无</td><td>同「吃东西」音效 + 手机联动的「滴滴」提示音</td><td>是</td><td>增加科技感，提示这是远程操作。下载表情后销毁</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="doc-footer">AI学习搭子 · 产品文档</footer>
+    </main>
+</div>
+<script>
+(function () {
+    var links = document.querySelectorAll(".nav-link");
+    var sections = [];
+    links.forEach(function (a) {
+        var id = a.getAttribute("href");
+        if (id && id.charAt(0) === "#") {
+            var el = document.querySelector(id);
+            if (el) sections.push({ link: a, el: el });
+        }
+    });
+    function onScroll() {
+        var y = window.scrollY + 120;
+        var current = sections[0];
+        sections.forEach(function (s) {
+            if (s.el.offsetTop <= y) current = s;
+        });
+        links.forEach(function (l) { l.classList.remove("active"); });
+        if (current) current.link.classList.add("active");
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+})();
+</script>
+</body>
+</html>
