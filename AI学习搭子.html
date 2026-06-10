@@ -624,6 +624,17 @@
             white-space: normal;
         }
 
+        .emoji-table tr.row-pending td {
+            background: #fff1f2;
+            color: #dc2626;
+        }
+
+        .emoji-table tr.row-pending td:first-child::after {
+            content: " · 待定";
+            font-size: 11px;
+            font-weight: 600;
+        }
+
         .settings-list {
             list-style: none;
             margin: 12px 0;
@@ -725,7 +736,7 @@
                 <div class="doc-meta">
                     <span>文档版本 · 最新</span>
                     <span>屏幕 · 1.85 寸圆形 LCD</span>
-                    <span>表情 · 39 种</span>
+                    <span>表情 · 38 种</span>
                 </div>
             </div>
         </header>
@@ -885,7 +896,6 @@
                 <ul>
                     <li>扫码登录后进入引导页；可短按 AI 键或呼叫「小狮」唤醒问答，也可选择跳过向导进入首页</li>
                     <li>唤醒后展示对应表情，并播报「小狮在呢，你请说」</li>
-                    <li>检测到用户说话，停止说话 <strong>2 秒</strong>后退出麦克风监听，进入「思考中」表情</li>
                     <li>思考完成后按问题作答，回答结束等待 <strong>1 秒</strong>后进入开机引导第二步</li>
                 </ul>
                 <div class="img-gallery">
@@ -925,10 +935,10 @@
             <div class="step">
                 <div class="step-head">
                     <span class="step-num">3.1</span>
-                    <span class="step-title">锁屏与熄屏</span>
+                    <span class="step-title">锁屏页</span>
                 </div>
-                <p>锁屏页显示「<span class="inline-hl">静静等待着</span>」表情；若 <strong>30 秒</strong>内无任何操作，自动熄屏。点击设置进入控制中心页面。</p>
-                <p>锁屏页默认展示表情；若没有任何触发操作，30 秒后自动熄屏。</p>
+                <p>锁屏页显示「<span class="inline-hl">静静地待着</span>」表情。若 <strong>30 秒</strong>内无任何操作，按表情管理要求从待机表情库中随机切换展示其他表情（打瞌睡、无聊、彩虹、呼噜酣睡等）。点击设置进入控制中心页面。</p>
+                <p>锁屏页默认展示表情；若没有任何触发操作，30 秒后随机切换其他待机表情，屏幕保持亮屏。</p>
                 <figure class="img-block device">
                     <div class="figure-img">
                         <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/5375faa4-3485-44d7-9864-2298607e6afd.png" alt="锁屏页">
@@ -953,7 +963,7 @@
                     <tbody>
                         <tr><td>4G 网络状态</td><td>显示 4G 信号格；无网时显示断网图标</td><td>纯展示</td></tr>
                         <tr><td>音量</td><td>显示当前音量等级图标</td><td>唤起音量调节界面</td></tr>
-                        <tr><td>电量</td><td>显示实时电量百分比 / 图标</td><td>进入设置并开启「低电量模式」<br>低电量模式开启后：不请求线上表情</td></tr>
+                        <tr><td>电量</td><td>显示实时电量百分比 / 图标</td><td>点击开启 / 关闭「低电量模式」（详见 <a href="#low-power">5.4 低电量模式</a>）</td></tr>
                         <tr><td>亮度</td><td>显示当前亮度等级图标</td><td>唤起亮度调节滑块</td></tr>
                         <tr><td>静音模式</td><td>显示当前开关状态（开 / 关）</td><td>切换静音模式的开启与关闭</td></tr>
                     </tbody>
@@ -982,6 +992,7 @@
         <section id="apps">
             <span class="section-label">APPS</span>
             <h2>4. 应用功能</h2>
+            <p class="section-desc">用户处于应用功能页时（听课、打电话、课程播放等），触摸互动表情一律禁用，详见 <a href="#emoji-rules">表情全局规则</a>。</p>
             <ul class="sub-nav">
                 <li><a href="#app-ai">4.1 AI 问答</a></li>
                 <li><a href="#app-msg">4.2 消息</a></li>
@@ -1092,7 +1103,23 @@
                 <li><strong>5.1 充电中</strong><span>显示充电中状态，点击屏幕进入首页</span></li>
                 <li><strong>5.2 无网络</strong><span>流量到期时，点击任何功能均无网络链接，需到运营商充值后才可以继续使用</span></li>
                 <li><strong>5.3 储存空间不足</strong><span>内存不足时提示</span></li>
+                <li><strong>5.4 低电量模式</strong><span>省电模式：保留微信通话与定位，触摸禁止，首页「静静地待着」5s 熄屏，长按 AI 键退出（详见下方说明）</span></li>
             </ul>
+
+            <h4 id="low-power">5.4 低电量模式</h4>
+            <p>通过控制中心「电量」入口可手动开启；电量 ≤20% 时「需要充电」表情提示结束后也可进入。开启后进入极端省电状态，仅保留必要通信能力。</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>类别</th><th>说明</th></tr></thead>
+                    <tbody>
+                        <tr><td>保留功能</td><td>微信通话、定位</td></tr>
+                        <tr><td>关闭功能</td><td>后台运行关闭；不请求线上表情</td></tr>
+                        <tr><td>交互限制</td><td>触摸禁止</td></tr>
+                        <tr><td>首页表现</td><td>固定展示「静静地待着」表情，<strong>5s</strong> 无操作自动熄屏</td></tr>
+                        <tr><td>退出方式</td><td>长按 AI 按键退出低电量模式</td></tr>
+                    </tbody>
+                </table>
+            </div>
             <figure class="img-block device">
                 <div class="figure-img">
                     <img src="https://alidocs.oss-cn-zhangjiakou.aliyuncs.com/res/1wvqrebwBv373nak/img/ad9efc9a-9219-46f0-9922-8717d5007f7b.png" alt="其他状态">
@@ -1186,19 +1213,22 @@
                 <li><strong>8.2</strong> 电量剩余 5%，每次启动播放一次需要充电动画</li>
                 <li><strong>8.3</strong> 充电磁吸时，播放显示一次正在充电动画，显示电量后进入正常状态</li>
                 <li><strong>8.4</strong> 充满电，不显示充满电动画</li>
+                <li><strong>8.5</strong> 低电量模式：可通过控制中心手动开启，或电量 ≤20% 提示后进入，规则详见 <a href="#low-power">5.4 低电量模式</a></li>
             </ul>
         </section>
 
         <section id="emoji" class="emoji-table">
             <span class="section-label">EXPRESSION</span>
             <h2>表情功能介绍</h2>
-            <p class="section-desc">共 39 种表情及触发规则，下表为完整对照（语音/音效已优化）。</p>
+            <p class="section-desc">共 38 种表情及触发规则。下表各条触发逻辑均受全局规则约束。</p>
 
+            <h3 id="emoji-rules">全局规则</h3>
             <ul class="rule-list">
-                <li><strong>状态优先级</strong><span>系统警告 &gt; 主动交互 &gt; 被动状态。高优状态触发时，强制打断并清除低优状态。</span></li>
-                <li><strong>语音保护</strong><span>在「在听」与「说话」状态下，屏蔽所有非紧急触摸互动，防止打断语音。</span></li>
-                <li><strong>超时兜底</strong><span>「在听」超时 10s 自动退出并提示；「在思考」超时 15s 自动退出并提示。</span></li>
-                <li><strong>触控冷却</strong><span>所有触摸互动（摸头/挠痒等）需设置 3s 冷却时间，防止连续触发导致音效吵闹。</span></li>
+                <li><strong>全局优先级</strong><span>应用层 &gt; 大模型语音交互 &gt; 动作 / 触摸触发。高优先级进行中时，低优先级不响应。</span></li>
+                <li><strong>表情状态优先级</strong><span>系统警告 &gt; 主动交互 &gt; 被动状态。高优状态触发时，强制打断并清除低优状态。</span></li>
+                <li><strong>首页专属触发</strong><span>表情仅在首页（锁屏页 / 待机首页）触发显示。用户进入应用功能页后（听课、打电话、课程播放、消息、设置等），触摸互动表情一律禁用，不因触摸触发任何表情切换。</span></li>
+                <li><strong>语音保护</strong><span>在「在听」与「说话」状态下，屏蔽所有非紧急触摸互动，防止打断大模型语音交互。</span></li>
+                <li><strong>超时兜底</strong><span>「在听」超时 10s 自动退出并提示；「在思考」超时 10s 自动退出并提示。</span></li>
                 <li><strong>断网降级</strong><span>所有联网大模型语音输出，必须配置本地兜底音效，断网时自动降级播放本地音效。</span></li>
             </ul>
 
@@ -1223,17 +1253,17 @@
                     <tbody>
                         <tr><td>1</td><td>开机动画</td><td>每次开机启动触发</td><td>3s</td><td>无</td><td>嗷呜～（伸懒腰声）+ 清脆的「叮铃」声</td><td>是</td><td>唤醒感，像小动物刚睡醒伸懒腰，清脆提示音代表系统就绪</td></tr>
                         <tr><td>2</td><td>联网失败</td><td>未连接网络的情况</td><td>3s</td><td>无</td><td>委屈的「呜…」，伴随轻微的「滴滴」断网提示音</td><td>是</td><td>表达「我掉线了」的委屈感，断网音增加系统提示感</td></tr>
-                        <tr><td>3</td><td>打瞌睡</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>渐弱的「呼…呼…」，伴随轻微的卡通打呼噜声</td><td>是</td><td>声音逐渐变小，营造真的睡着了的沉浸感。与 4,5,6,7 随机触发其一，仅播放一次不循环</td></tr>
-                        <tr><td>4</td><td>静静地待着</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>轻微的「嗯…嗯…」，伴随微弱的呼吸声</td><td>是</td><td>表达安静陪伴，呼吸声让设备有「生命感」。与 3,5,6,7 随机触发其一，仅播放一次不循环</td></tr>
-                        <tr><td>5</td><td>无聊</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>叹气声「唉…」，伴随手指敲击桌面的「哒哒」声</td><td>是</td><td>拟人化表达无聊，敲击声增加趣味性。与 3,4,6,7 随机触发其一，仅播放一次不循环</td></tr>
-                        <tr><td>6</td><td>彩虹</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>惊喜的「哇哦～」，伴随「Bling Bling」的魔法闪烁音</td><td>是</td><td>强化惊喜感，魔法音配合彩虹视觉。与 3,4,5,7 随机触发其一，仅播放一次不循环</td></tr>
-                        <tr><td>7</td><td>呼噜（酣睡）</td><td>1 分钟无交互自动触发</td><td>1 分钟</td><td>无</td><td>节奏感强的「呼噜…呼噜…」，伴随轻微的震动反馈</td><td>是</td><td>节奏比「打瞌睡」更平稳，配合马达震动体验更佳。与 3,4,5,6 随机触发其一，仅播放一次不循环</td></tr>
+                        <tr><td>3</td><td>打瞌睡</td><td>1 分钟无交互后进入待机循环，本表情在 3–7 中随机出现</td><td>10s</td><td>无</td><td>渐弱的「呼…呼…」，伴随轻微的卡通打呼噜声</td><td>是</td><td>声音逐渐变小，营造真的睡着了的沉浸感。待机循环持续 1 分钟，在 3–7 号表情中随机切换，每个显示 10s 后切换下一个；循环结束后进入休眠</td></tr>
+                        <tr><td>4</td><td>静静地待着</td><td>1 分钟无交互后进入待机循环，本表情在 3–7 中随机出现</td><td>10s</td><td>无</td><td>轻微的「嗯…嗯…」，伴随微弱的呼吸声</td><td>是</td><td>表达安静陪伴，呼吸声让设备有「生命感」。待机循环持续 1 分钟，在 3–7 号表情中随机切换，每个显示 10s 后切换下一个；循环结束后进入休眠</td></tr>
+                        <tr><td>5</td><td>无聊</td><td>1 分钟无交互后进入待机循环，本表情在 3–7 中随机出现</td><td>10s</td><td>无</td><td>叹气声「唉…」，伴随手指敲击桌面的「哒哒」声</td><td>是</td><td>拟人化表达无聊，敲击声增加趣味性。待机循环持续 1 分钟，在 3–7 号表情中随机切换，每个显示 10s 后切换下一个；循环结束后进入休眠</td></tr>
+                        <tr><td>6</td><td>彩虹</td><td>1 分钟无交互后进入待机循环，本表情在 3–7 中随机出现</td><td>10s</td><td>无</td><td>惊喜的「哇哦～」，伴随「Bling Bling」的魔法闪烁音</td><td>是</td><td>强化惊喜感，魔法音配合彩虹视觉。待机循环持续 1 分钟，在 3–7 号表情中随机切换，每个显示 10s 后切换下一个；循环结束后进入休眠</td></tr>
+                        <tr><td>7</td><td>呼噜（酣睡）</td><td>1 分钟无交互后进入待机循环，本表情在 3–7 中随机出现</td><td>10s</td><td>无</td><td>节奏感强的「呼噜…呼噜…」，伴随轻微的震动反馈</td><td>是</td><td>节奏比「打瞌睡」更平稳，配合马达震动体验更佳。待机循环持续 1 分钟，在 3–7 号表情中随机切换，每个显示 10s 后切换下一个；循环结束后进入休眠</td></tr>
                         <tr><td>8</td><td>睡觉（指令）</td><td>指令要求 2 次后触发，第一次不愿意，第二次进入睡眠状态</td><td>1 分钟</td><td>睡觉、去睡觉、晚安、我要睡觉了、休息一下</td><td>第一次：撒娇的「哎呀，人家还不想睡嘛…」<br>第二次：满足的「好哒，那我睡觉去啦，晚安～」</td><td>是</td><td>第一次带点拖音的撒娇，第二次语气要轻柔、催眠。需记录触发次数状态，30s 内未再次触发则重置</td></tr>
-                        <tr><td>9</td><td>需要充电</td><td>电量 ≤20%</td><td>3s</td><td>无</td><td>虚弱的「呜…电量快没啦，要充电…」+ 低电量警报音</td><td>是</td><td>低电量提示要柔和不刺耳。结束后显示低电量模式页面</td></tr>
+                        <tr><td>9</td><td>需要充电</td><td>电量 ≤20%</td><td>3s</td><td>无</td><td>虚弱的「呜…电量快没啦，要充电…」+ 低电量警报音</td><td>是</td><td>低电量提示要柔和不刺耳。结束后可进入低电量模式（详见 5.4）</td></tr>
                         <tr><td>10</td><td>充电时刻</td><td>充电连接后显示充电动画</td><td>3s</td><td>无</td><td>轻快的「叮～」+ 充电动效音</td><td>是</td><td>充电连接时的正向反馈。结束后显示充电中的图</td></tr>
                         <tr><td>11</td><td>在听</td><td>唤醒小狮 / 长按 AI 按键 / 点击 AI 问答</td><td>持续至说话结束</td><td>小狮、呼叫小狮</td><td>清脆的「小狮在呢，你请说～」+ 轻微的「滴」提示音</td><td>是</td><td>提示音要短促清脆，代表麦克风已开启。未输入 10s 断开；输入后 3s 未说话断开</td></tr>
                         <tr><td>12</td><td>在思考</td><td>识别完在听指令后，大模型思考内容时</td><td>持续至指令识别完毕</td><td>无</td><td>无语音，播放「咕噜咕噜」的脑内运转音或轻柔的「滴答」声</td><td>是</td><td>避免死寂，用轻微的机械音或思考音填补大模型处理时的空白</td></tr>
-                        <tr><td>13</td><td>疑问茫然</td><td>语音指令：识别未知问题 / 超出知识库</td><td>持续至说完内容</td><td>无</td><td>疑惑的「咦？」，伴随卡通的「问号弹出」音效</td><td>是</td><td>表达「我没听懂」，音效要带有疑问的上扬语调。联网状态下由大模型输出</td></tr>
+                        <tr class="row-pending"><td>13</td><td>疑问茫然</td><td>语音指令：识别未知问题 / 超出知识库/主动询问问题</td><td>持续至说完内容</td><td>无</td><td>疑惑的「咦？」，伴随卡通的「问号弹出」音效</td><td>是</td><td>表达「我没听懂」，音效要带有疑问的上扬语调。联网状态下由大模型输出</td></tr>
                         <tr><td>14</td><td>说话</td><td>根据用户输入的指令，思考后已知问题显示</td><td>持续至说完内容</td><td>无</td><td>由大模型 TTS 输出（建议配置活泼、有亲和力的童声 / 青年音色）</td><td>是</td><td>语音合成需带有情绪起伏，避免机械播报</td></tr>
                         <tr><td>15</td><td>开心</td><td>屏幕脸蛋上下滑动 2 次、额头左右滑动 2 次 / 语音指令</td><td>3s</td><td>你真棒、我好开心、太开心了、真厉害等</td><td>欢快的「哈哈！」，伴随撒花 / 星星的「Bling」声</td><td>是</td><td>情绪饱满，笑声要自然不突兀。屏幕滑动操作和鬼脸随机出现。联网由大模型输出</td></tr>
                         <tr><td>16</td><td>鬼脸</td><td>屏幕滑动 / 语音指令</td><td>3s</td><td>做个鬼脸、搞笑一点、来个鬼脸</td><td>调皮的「略略略～」或「嘻嘻」，伴随滑稽的「Boing」弹簧音</td><td>是</td><td>弹簧音配合鬼脸视觉，喜剧效果拉满。联网状态下相同</td></tr>
@@ -1258,8 +1288,7 @@
                         <tr><td>35</td><td>吃饱了开心</td><td>识别到有进行喂食操作</td><td>3s</td><td>无</td><td>满足的「嗝～」，伴随开心的「嘻嘻」声</td><td>是</td><td>拟人化表达吃饱，打嗝声增加趣味</td></tr>
                         <tr><td>36</td><td>吃东西</td><td>喂食时</td><td>持续至喂食结束</td><td>无</td><td>夸张的「吧唧吧唧」咀嚼音</td><td>否</td><td>配合喂食动作，声音要清脆。需确认是否改为本地缓存</td></tr>
                         <tr><td>37</td><td>舒服</td><td>抚摸后背</td><td>3s</td><td>无</td><td>满足的「嗯～」，伴随猫咪般的「呼噜」声</td><td>是</td><td>表达被抚摸的惬意</td></tr>
-                        <tr><td>38</td><td>休眠</td><td>短按开关键</td><td>持续至按键唤醒</td><td>无</td><td>渐弱的「晚安～」，伴随轻柔的「呼噜」声</td><td>是</td><td>声音逐渐变小，引导用户进入休息状态</td></tr>
-                        <tr><td>39</td><td>手机联动喂食</td><td>手机触发，通过 MQTT 协议传输联动</td><td>3s</td><td>无</td><td>同「吃东西」音效 + 手机联动的「滴滴」提示音</td><td>是</td><td>增加科技感，提示这是远程操作。下载表情后销毁</td></tr>
+                        <tr><td>38</td><td>休眠</td><td>短按开关键</td><td>持续至按键唤醒</td><td>无</td><td>无</td><td>是</td><td>声音逐渐变小，引导用户进入休息状态</td></tr>
                     </tbody>
                 </table>
             </div>
